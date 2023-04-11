@@ -1,0 +1,7 @@
+[
+  { "id": "home", "name": "Home" },
+  { "id": "ai-bots", "name": "Products" },
+  { "id": "works", "name": "How it works" },
+  { "id": "pricing", "name": "Pricing" },
+  { "id": "contact", "name": "FAQ" }
+]
