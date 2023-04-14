@@ -1,8 +1,9 @@
 import axios from 'axios';
+import backend_api from 'src/config';
 
 const uploadFile = (formData, onUploadProgress) => {
   console.log('data = ', formData);
-  return axios.post('http://localhost:8080/upload/file', formData, {
+  return axios.post(backend_api + 'upload/file', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -11,14 +12,14 @@ const uploadFile = (formData, onUploadProgress) => {
 };
 
 const embedding = (fileName, email) => {
-  return axios.post('http://localhost:8080/upload/train', {
+  return axios.post(backend_api + 'upload/train', {
     filename: fileName,
     email: email,
   });
 };
 
 const requestMessage = (value, email) => {
-  return axios.post('http://localhost:8080/upload/requestMessage', {
+  return axios.post(backend_api + 'upload/requestMessage', {
     value: value,
     email: email,
   });
