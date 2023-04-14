@@ -2,10 +2,12 @@ import HEADER from 'src/constants/menu.json';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
+import { notification } from 'antd';
+
 import Logo from 'src/assets/img/head.png';
 import auth from '../../pages/Auth/FirebaseConfig';
+import { isEmpty } from 'src/utils/isEmpty';
 
-import UserIcon from 'src/assets/img/user_icon.png';
 import { useViewport } from 'src/utils';
 type Props = {
   menu: any;
@@ -18,17 +20,26 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const viewport = useViewport();
+  const [logFlag, setLogFlag] = useState(
+    isEmpty(localStorage.getItem('loggedIn')) ? 'false' : 'true'
+  );
 
   const handleGoSection = (item: any) => {
     document.getElementById(item.id).scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleGoPage = (path: string) => {
-    if (path == 'logOut') {
+    if (path === 'logOut') {
       auth
         .signOut()
         .then(() => {
-          localStorage.setItem('loggedIn', 'false');
+          notification.success({
+            description: 'Logout Success',
+            message: '',
+          });
+          localStorage.clear();
+          setLogFlag('false');
+          navigate('/');
         })
         .catch((error) => {
           console.log('Log Out', error);
@@ -82,7 +93,7 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
                     </div>
                   ))}
 
-                {localStorage.getItem('loggedIn') == 'true' ? (
+                {logFlag === 'true' ? (
                   <button
                     className={` ml-10 mr-5 flex w-44 rounded-lg bg-indigo-500 p-3 py-3 px-6 text-lg text-white font-semibold text-txGray shadow-sm hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] lg:ml-32 xl:my-auto xl:ml-0 justify-center`}
                     onClick={() => handleGoPage('logOut')}

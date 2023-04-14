@@ -10,22 +10,17 @@ const uploadFile = (formData, onUploadProgress) => {
   });
 };
 
-const embedding = (fileName) => {
+const embedding = (fileName, email) => {
   return axios.post('http://localhost:8080/upload/train', {
     filename: fileName,
+    email: email,
   });
 };
 
-const requestMessage = (value) => {
-  console.log('vaule = ', value);
-  return fetch('http://localhost:8080/upload/requestMessage', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      value,
-    }),
+const requestMessage = (value, email) => {
+  return axios.post('http://localhost:8080/upload/requestMessage', {
+    value: value,
+    email: email,
   });
 };
 

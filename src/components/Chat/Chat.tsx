@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { message, Upload, notification } from 'antd';
+import { Upload, notification } from 'antd';
 import { UploadFile } from 'antd/es/upload';
 import ChatMessage from '../ChatMessage/ChatMessage';
 import uploadServices from 'src/services/uploadServices';
+import { isEmpty } from 'src/utils/isEmpty';
 
 const { Dragger } = Upload;
 
-const Chat = () => {
+const Chat = ({ text }) => {
+  console.log('ChatMiddle = ', text);
   const inputRef = useRef();
   const [formValue, setFormValue] = useState('');
   const [files, setFiles] = useState([]);
@@ -14,6 +16,7 @@ const Chat = () => {
   const [fileRealName, setFileRealName] = useState('');
   const [promptValue, setPromptValue] = useState('');
   const [array, setArray] = useState([]);
+
   const req_qa_box = useRef(null);
 
   const props = {
@@ -30,13 +33,18 @@ const Chat = () => {
           message: '',
         });
       }
+      if (info.file.status === 'error') {
+        notification.error({
+          description: `${info.file.originFileObj.name} Upload Failed`,
+          message: '',
+        });
+      }
     },
     files,
     beforeUpload: (info: UploadFile) => {
-      console.log('BEFORE = ', info);
       if (info.type !== 'application/pdf') {
         notification.error({
-          description: `${info.name} Upload Failed`,
+          description: `${info.name} Type Wrong`,
           message: '',
         });
         return Upload.LIST_IGNORE;
@@ -46,13 +54,18 @@ const Chat = () => {
 
   useEffect(() => {
     req_qa_box.current.scrollTop = req_qa_box.current.scrollHeight;
-  }, []);
+    if (!isEmpty(text)) {
+      const save = array.slice();
+      save.push({ message: text, flag: true });
+      setArray(save);
+    }
+  }, [text]);
 
   const handleEmbedding = (e) => {
     e.preventDefault();
     setFiles([]);
     uploadServices
-      .embedding(fileName)
+      .embedding(fileName, localStorage.getItem('email'))
       .then((result) => {
         console.log('result = ', result);
         notification.success({
@@ -78,15 +91,21 @@ const Chat = () => {
   const handleMessage = async () => {
     setFormValue('');
     const save = array.slice();
-    save.push({ message: formValue });
-    save.push({ message: '...' });
+    save.push({ message: formValue, flag: false });
+    save.push({ message: '...', flag: true });
     setArray(save);
-    const response = await uploadServices.requestMessage(formValue);
-    const data = await response.json();
-    console.log(data);
-    const update = save.slice();
-    update[update.length - 1].message = data.text;
-    setArray(update);
+    uploadServices
+      .requestMessage(formValue, localStorage.getItem('email'))
+      .then((res) => {
+        console.log('response Message = ', res);
+        const update = save.slice();
+        update[update.length - 1].message = res.data.text;
+        update[update.length - 1].flag = true;
+        setArray(update);
+      })
+      .catch((err) => {
+        console.log('MEssage Error = ', err);
+      });
   };
 
   return (
@@ -110,17 +129,20 @@ const Chat = () => {
             ref={req_qa_box}
             className="relative flex w-full h-32 flex-grow flex-col mt-4 rounded-md border border-black/10 bg-white shadow-[0_0_10px_rgba(0,0,0,0.10)] overflow-y-auto overflow-x-hidden"
           >
-            {array &&
+            {!isEmpty(array) ? (
               array.map((item, index) => {
                 return (
                   <ChatMessage
                     key={index}
                     box_ref={req_qa_box}
                     message={item.message}
-                    status={index % 2 === 0 ? true : false}
+                    status={item.flag}
                   />
                 );
-              })}
+              })
+            ) : (
+              <></>
+            )}
           </div>
 
           {fileName ? (

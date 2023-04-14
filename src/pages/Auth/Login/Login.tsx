@@ -16,6 +16,7 @@ const Login = () => {
 
   //Firebase Auth
   const handleGoogleLogin = async () => {
+    console.log('Hello Google = ', process.env.NODE_ENV);
     auth.setPersistence(browserLocalPersistence);
 
     const provider = new GoogleAuthProvider();
@@ -29,10 +30,11 @@ const Login = () => {
     const credential = GoogleAuthProvider.credentialFromResult(loginResult);
     if (!credential) throw 'Missing credentials!';
     notification.success({
-      description: 'Login Successfully',
+      description: 'Login Success',
       message: '',
     });
     localStorage.setItem('loggedIn', 'true');
+    localStorage.setItem('email', loginResult.user.email);
     setTimeout(() => {
       navigate('/');
     }, 500);
@@ -40,31 +42,39 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    console.log('Click Button = ', process.env.NODE_ENV);
+
     const data = {
       email: e.target.email.value,
       password: e.target.password.value,
     };
 
-    console.log(data);
-
     authServices
       .authLogin(data)
       .then((result) => {
+        console.log(result);
         notification.success({
-          description: 'Login Successfully',
+          description: result.data.message,
           message: '',
         });
         localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('email', data.email);
         setTimeout(() => {
           navigate('/');
         }, 500);
       })
       .catch((error) => {
-        console.log('error = ', error);
-        notification.error({
-          description: `${error.response.data.message}`,
-          message: '',
-        });
+        if (error.response) {
+          notification.error({
+            description: `${error.response.data.message}`,
+            message: '',
+          });
+        } else {
+          notification.error({
+            description: 'Server Error',
+            message: '',
+          });
+        }
       });
   };
 
