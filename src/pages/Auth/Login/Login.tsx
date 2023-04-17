@@ -64,6 +64,8 @@ const Login = () => {
         }, 500);
       })
       .catch((error) => {
+        console.log('error');
+        console.log(error);
         if (error.response) {
           notification.error({
             description: `${error.response.data.message}`,

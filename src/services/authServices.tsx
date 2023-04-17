@@ -7,6 +7,7 @@ const authRegister = (data) => {
 };
 
 const authLogin = (data) => {
+  console.log('data = ', data);
   return axios.post(backend_api + 'user/login', data);
 };
 

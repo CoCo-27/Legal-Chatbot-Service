@@ -43,8 +43,8 @@ const Chatbar = ({ text, setText }) => {
   };
 
   const handleSummarize = () => {
-    console.log('name');
-    const email = localStorage.getItem('email');
+    const email = localStorage.getItem('fileName');
+    console.log('email');
     summarizeServices
       .summarize(email)
       .then((res) => {

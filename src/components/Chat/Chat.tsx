@@ -4,16 +4,19 @@ import { UploadFile } from 'antd/es/upload';
 import ChatMessage from '../ChatMessage/ChatMessage';
 import uploadServices from 'src/services/uploadServices';
 import { isEmpty } from 'src/utils/isEmpty';
+import backend_api from 'src/config';
 
 const { Dragger } = Upload;
 
 const Chat = ({ text }) => {
   console.log('ChatMiddle = ', text);
+  // const [midText, setMidText] = useState();
+  // setMidText(text);
   const inputRef = useRef();
   const [formValue, setFormValue] = useState('');
   const [files, setFiles] = useState([]);
-  const [fileName, setFileName] = useState('');
-  const [fileRealName, setFileRealName] = useState('');
+  const [fileName, setFileName] = useState(localStorage.getItem('fileName') ? localStorage.getItem('fileName') : '');
+  const [fileRealName, setFileRealName] = useState(localStorage.getItem('fileRealName') ? localStorage.getItem('fileRealName') : '');
   const [promptValue, setPromptValue] = useState('');
   const [array, setArray] = useState([]);
 
@@ -21,13 +24,15 @@ const Chat = ({ text }) => {
 
   const props = {
     name: 'file',
-    action: 'http://localhost:8080/upload/file',
+    action: backend_api + 'upload/file',
     onChange: (info) => {
       setFiles(info.fileList);
       if (info.file.status === 'done') {
         // Handle response from API
         setFileRealName(info.file.response.originalname);
         setFileName(info.file.response.filename);
+        localStorage.setItem('fileRealName', info.file.response.originalname);
+        localStorage.setItem('fileName', info.file.response.filename);
         notification.success({
           description: `${info.file.response.originalname} Upload Success`,
           message: '',
@@ -54,6 +59,7 @@ const Chat = ({ text }) => {
 
   useEffect(() => {
     req_qa_box.current.scrollTop = req_qa_box.current.scrollHeight;
+    debugger
     if (!isEmpty(text)) {
       const save = array.slice();
       save.push({ message: text, flag: true });
@@ -61,11 +67,15 @@ const Chat = ({ text }) => {
     }
   }, [text]);
 
+  useEffect(()=>{
+    debugger
+  },[])
+
   const handleEmbedding = (e) => {
     e.preventDefault();
     setFiles([]);
     uploadServices
-      .embedding(fileName, localStorage.getItem('email'))
+      .embedding(localStorage.getItem('fileName'), localStorage.getItem('email'))
       .then((result) => {
         console.log('result = ', result);
         notification.success({
@@ -80,6 +90,7 @@ const Chat = ({ text }) => {
 
   const handleCancel = (e) => {
     setFileName('');
+    localStorage.setItem('fileName', '');
   };
 
   const handlePressEnter = (e) => {
