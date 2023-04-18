@@ -11,6 +11,10 @@ const uploadFile = (formData, onUploadProgress) => {
   });
 };
 
+const getPrompt = () => {
+  return axios.get(backend_api + 'upload/getPrompt');
+};
+
 const embedding = (fileName, email) => {
   return axios.post(backend_api + 'upload/train', {
     filename: fileName,
@@ -27,6 +31,7 @@ const requestMessage = (value, email) => {
 
 export default {
   uploadFile,
+  getPrompt,
   embedding,
   requestMessage,
 };

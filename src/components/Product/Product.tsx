@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { notification } from 'antd';
 import Whatsaapp from 'src/assets/img/whatsico.png';
 import Tele from 'src/assets/img/tele.png';
 import Dalle from 'src/assets/img/dalle.png';
@@ -10,7 +11,17 @@ const Aibot = () => {
   const navigate = useNavigate();
 
   const handleChat = () => {
-    navigate('/chat');
+    if (!localStorage.getItem('email')) {
+      notification.info({
+        description: 'Please log in before going to the chat page.',
+        message: '',
+      });
+      setTimeout(() => {
+        navigate('/login');
+      }, 500);
+    } else {
+      navigate('/chat');
+    }
   };
 
   return (

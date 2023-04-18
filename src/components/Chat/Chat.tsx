@@ -9,14 +9,17 @@ import backend_api from 'src/config';
 const { Dragger } = Upload;
 
 const Chat = ({ text }) => {
-  console.log('ChatMiddle = ', text);
-  // const [midText, setMidText] = useState();
-  // setMidText(text);
   const inputRef = useRef();
   const [formValue, setFormValue] = useState('');
   const [files, setFiles] = useState([]);
-  const [fileName, setFileName] = useState(localStorage.getItem('fileName') ? localStorage.getItem('fileName') : '');
-  const [fileRealName, setFileRealName] = useState(localStorage.getItem('fileRealName') ? localStorage.getItem('fileRealName') : '');
+  const [fileName, setFileName] = useState(
+    localStorage.getItem('fileName') ? localStorage.getItem('fileName') : ''
+  );
+  const [fileRealName, setFileRealName] = useState(
+    localStorage.getItem('fileRealName')
+      ? localStorage.getItem('fileRealName')
+      : ''
+  );
   const [promptValue, setPromptValue] = useState('');
   const [array, setArray] = useState([]);
 
@@ -59,7 +62,6 @@ const Chat = ({ text }) => {
 
   useEffect(() => {
     req_qa_box.current.scrollTop = req_qa_box.current.scrollHeight;
-    debugger
     if (!isEmpty(text)) {
       const save = array.slice();
       save.push({ message: text, flag: true });
@@ -67,15 +69,14 @@ const Chat = ({ text }) => {
     }
   }, [text]);
 
-  useEffect(()=>{
-    debugger
-  },[])
-
   const handleEmbedding = (e) => {
     e.preventDefault();
     setFiles([]);
     uploadServices
-      .embedding(localStorage.getItem('fileName'), localStorage.getItem('email'))
+      .embedding(
+        localStorage.getItem('fileName'),
+        localStorage.getItem('email')
+      )
       .then((result) => {
         console.log('result = ', result);
         notification.success({

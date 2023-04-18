@@ -5,14 +5,16 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
-import { toast } from 'react-toastify';
+import { notification, Spin } from 'antd';
 
 import auth from '../FirebaseConfig';
 import authServices from 'src/services/authServices';
+import Loading from 'src/components/Icon/Loader';
 import './Register.css';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleGoogleLogin = async () => {
     auth.setPersistence(browserLocalPersistence);
@@ -27,15 +29,18 @@ const SignUp = () => {
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(loginResult);
     if (!credential) throw 'Missing credentials!';
-    toast.success('Login successfully');
-    localStorage.setItem('loggedIn', 'true');
+    notification.success({
+      description: 'Register Success',
+      message: '',
+    });
     setTimeout(() => {
-      navigate('/');
+      navigate('/login');
     }, 1000);
   };
 
   const handleRegister = (e) => {
     e.preventDefault();
+    setLoading(true);
     const data = {
       first_name: e.target.firstName.value,
       last_name: e.target.lastName.value,
@@ -47,12 +52,29 @@ const SignUp = () => {
       .authRegister(data)
       .then((result) => {
         console.log('Okay = ', result);
+        notification.success({
+          description: 'Register Success',
+          message: '',
+        });
+        setLoading(false);
         setTimeout(() => {
           navigate('/login');
         }, 1000);
       })
       .catch((error) => {
         console.log('error = ', error);
+        setLoading(false);
+        if (error.response) {
+          notification.error({
+            description: `${error.response.data.message}`,
+            message: '',
+          });
+        } else {
+          notification.error({
+            description: 'Server Error',
+            message: '',
+          });
+        }
       });
   };
 
@@ -153,19 +175,25 @@ const SignUp = () => {
                   type="submit"
                   className="mt-5 tracking-wide font-semibold bg-green-400 text-gray-100 w-full py-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                 >
-                  <svg
-                    className="w-6 h-6 -ml-2"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                    <circle cx="8.5" cy="7" r="4" />
-                    <path d="M20 8v6M23 11h-6" />
-                  </svg>
-                  <span className="ml-3">Sign Up</span>
+                  {!loading ? (
+                    <>
+                      <svg
+                        className="w-6 h-6 -ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                        <circle cx="8.5" cy="7" r="4" />
+                        <path d="M20 8v6M23 11h-6" />
+                      </svg>
+                      <span className="ml-3">Sign Up</span>
+                    </>
+                  ) : (
+                    <Spin indicator={Loading} style={{ color: 'white' }} />
+                  )}
                 </button>
               </div>
             </div>

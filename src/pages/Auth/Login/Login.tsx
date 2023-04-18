@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   browserLocalPersistence,
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
-import { notification } from 'antd';
+import { notification, Spin } from 'antd';
 
 import auth from '../FirebaseConfig';
 import authServices from 'src/services/authServices';
+import Loading from 'src/components/Icon/Loader';
 import './Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   //Firebase Auth
   const handleGoogleLogin = async () => {
@@ -42,6 +44,7 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log('Click Button = ', process.env.NODE_ENV);
 
     const data = {
@@ -57,6 +60,7 @@ const Login = () => {
           description: result.data.message,
           message: '',
         });
+        setLoading(false);
         localStorage.setItem('loggedIn', 'true');
         localStorage.setItem('email', data.email);
         setTimeout(() => {
@@ -66,6 +70,7 @@ const Login = () => {
       .catch((error) => {
         console.log('error');
         console.log(error);
+        setLoading(false);
         if (error.response) {
           notification.error({
             description: `${error.response.data.message}`,
@@ -162,20 +167,27 @@ const Login = () => {
                 <button
                   className="mt-5 tracking-wide font-semibold bg-green-400 text-white w-full py-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   type="submit"
+                  disabled={loading}
                 >
-                  <svg
-                    className="w-6 h-6 -ml-2"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                    <circle cx="8.5" cy="7" r="4" />
-                    <path d="M20 8v6M23 11h-6" />
-                  </svg>
-                  <span className="ml-3">Log In</span>
+                  {!loading ? (
+                    <>
+                      <svg
+                        className="w-6 h-6 -ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                        <circle cx="8.5" cy="7" r="4" />
+                        <path d="M20 8v6M23 11h-6" />
+                      </svg>
+                      <span className="ml-3">Log In</span>
+                    </>
+                  ) : (
+                    <Spin indicator={Loading} style={{ color: 'white' }} />
+                  )}
                 </button>
               </div>
             </div>

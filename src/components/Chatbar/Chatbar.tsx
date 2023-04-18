@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IconPlus, IconHome } from '@tabler/icons-react';
 
 import summarizeServices from 'src/services/summarizeServices';
+import uploadServices from 'src/services/uploadServices';
 import ChatConversation from '../ChatConversation/ChatConversation';
 import Question from '../Question/Question';
 import { isEmpty } from 'src/utils/isEmpty';
 import { useNavigate } from 'react-router-dom';
+import { notification } from 'antd';
 
 const Chatbar = ({ text, setText }) => {
   const navigate = useNavigate();
@@ -42,18 +44,31 @@ const Chatbar = ({ text, setText }) => {
     setCount(index);
   };
 
-  const handleSummarize = () => {
+  const getPrompt = async () => {
+    const data = await uploadServices.getPrompt();
+    return data.data.data;
+  };
+
+  const handleSummarize = async () => {
     const email = localStorage.getItem('fileName');
-    console.log('email');
-    summarizeServices
-      .summarize(email)
-      .then((res) => {
-        console.log('Summarize Suc = ', res);
-        setText(res.data.text);
-      })
-      .catch((err) => {
-        console.log('Summarize Err= ', err);
+    const prompt = await getPrompt();
+    if (!email) {
+      notification.info({
+        description: 'Please upload your PDF file',
+        message: '',
       });
+    } else {
+      console.log('email = ', email, prompt);
+      summarizeServices
+        .summarize(email, prompt)
+        .then((res) => {
+          console.log('Summarize Suc = ', res);
+          setText(res.data.text);
+        })
+        .catch((err) => {
+          console.log('Summarize Err= ', err);
+        });
+    }
   };
 
   return (
