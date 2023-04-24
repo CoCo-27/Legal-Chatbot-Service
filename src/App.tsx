@@ -1,13 +1,20 @@
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import setAuthToken from './utils/setAuthToken';
 import Home from './pages/Home';
 import Login from './pages/Auth/Login/Login';
 import SignUp from './pages/Auth/Register/Register';
+import ForgotPassword from './pages/Auth/ForgotPassword/ForgotPassword';
+import CheckPassword from './pages/Auth/ForgotPassword/CheckPassword';
+import ResetPassword from './pages/Auth/ResetPassword/ResetPassword';
 import Welcome from './pages/Welcome';
 import Chat from './pages/Chat/Chat';
 
 const App = () => {
+  useEffect(() => {
+    setAuthToken(localStorage.getItem('token'));
+  }, []);
+
   return (
     <>
       <Router>
@@ -15,11 +22,13 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/checkpassword/:id" element={<CheckPassword />} />
+          <Route path="/resetpassword/:id" element={<ResetPassword />} />
           <Route path="/Welcome" element={<Welcome />} />
           <Route path="/chat" element={<Chat />} />
         </Routes>
       </Router>
-      <ToastContainer />
     </>
   );
 };

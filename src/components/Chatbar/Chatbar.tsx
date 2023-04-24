@@ -1,22 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { IconPlus, IconHome } from '@tabler/icons-react';
+import { IconMessagesOff, IconPlus, IconHome } from '@tabler/icons-react';
+import { notification } from 'antd';
 
 import summarizeServices from 'src/services/summarizeServices';
 import uploadServices from 'src/services/uploadServices';
+import questionServices from 'src/services/questionServices';
 import ChatConversation from '../ChatConversation/ChatConversation';
 import Question from '../Question/Question';
 import { isEmpty } from 'src/utils/isEmpty';
 import { useNavigate } from 'react-router-dom';
-import { notification } from 'antd';
 
-const Chatbar = ({ text, setText }) => {
+const Chatbar = ({ text, setText, setLoading, setButtonFlag }) => {
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
+  const [questionArray, setQuestionArray] = useState([]);
   const [conversationCount, setConversationCount] = useState(
     isEmpty(JSON.parse(localStorage.getItem('conversationHistory')))
       ? []
       : JSON.parse(localStorage.getItem('conversationHistory'))
   );
+
+  useEffect(() => {
+    questionServices
+      .getQuestion()
+      .then((result) => {
+        setQuestionArray(result.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const gotoHome = () => {
     navigate('/');
@@ -49,25 +62,41 @@ const Chatbar = ({ text, setText }) => {
     return data.data.data;
   };
 
-  const handleSummarize = async () => {
-    const email = localStorage.getItem('fileName');
-    const prompt = await getPrompt();
-    if (!email) {
-      notification.info({
-        description: 'Please upload your PDF file',
-        message: '',
-      });
-    } else {
-      console.log('email = ', email, prompt);
-      summarizeServices
-        .summarize(email, prompt)
-        .then((res) => {
-          console.log('Summarize Suc = ', res);
-          setText(res.data.text);
-        })
-        .catch((err) => {
-          console.log('Summarize Err= ', err);
+  const handleSummarize = async (index) => {
+    if (index === 0) {
+      setLoading(true);
+      setButtonFlag(true);
+      localStorage.setItem('disable_flag', JSON.stringify(true));
+
+      const email = localStorage.getItem('email');
+      const fileName = localStorage.getItem('fileName');
+      const prompt = await getPrompt();
+      if (!fileName) {
+        setLoading(false);
+        notification.info({
+          description: 'Please upload your PDF file',
+          message: '',
+          duration: 2,
         });
+      } else {
+        summarizeServices
+          .summarize(email, fileName, prompt)
+          .then((res) => {
+            console.log('Summarize Suc = ', res);
+            setLoading(false);
+            setText(res.data.text);
+          })
+          .catch((err) => {
+            localStorage.setItem('disable_flag', JSON.stringify(false));
+            setLoading(false);
+            notification.error({
+              description: 'Something went wrong',
+              message: '',
+              duration: 2,
+            });
+            console.log('Summarize Err= ', err);
+          });
+      }
     }
   };
 
@@ -99,12 +128,24 @@ const Chatbar = ({ text, setText }) => {
               QUICK QUESTION
             </label>
 
-            <Question name={'SUMMARIZE'} onClick={handleSummarize} />
-            <Question name={'KEY POINTS'} />
-            <Question name={'WHY'} />
-            <Question name={'OTHER 1'} />
-            <Question name={'OTHER 2'} />
-            <Question name={'OTHER 3'} />
+            {questionArray.length > 0 ? (
+              questionArray.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <Question
+                      index={index}
+                      name={item}
+                      onClick={handleSummarize}
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <div className="flex flex-col gap-3 items-center text-sm leading-normal mt-8 text-white opacity-50">
+                <IconMessagesOff />
+                No Questions.
+              </div>
+            )}
             {/* {conversationCount.length > 0 ? (
               <div className="h-full">
                 {conversationCount.map((item, index) => {

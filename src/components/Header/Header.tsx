@@ -21,7 +21,7 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
   const navigate = useNavigate();
   const viewport = useViewport();
   const [logFlag, setLogFlag] = useState(
-    isEmpty(localStorage.getItem('loggedIn')) ? 'false' : 'true'
+    isEmpty(localStorage.getItem('token')) ? 'false' : 'true'
   );
 
   const handleGoSection = (item: any) => {

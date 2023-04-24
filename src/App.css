@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+
+.ant-spin-nested-loading .ant-spin-container {
+  height: 100%;
+}

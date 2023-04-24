@@ -9,6 +9,7 @@ import { notification, Spin } from 'antd';
 
 import auth from '../FirebaseConfig';
 import authServices from 'src/services/authServices';
+import setAuthToken from 'src/utils/setAuthToken';
 import Loading from 'src/components/Icon/Loader';
 import './Login.css';
 
@@ -35,7 +36,7 @@ const Login = () => {
       description: 'Login Success',
       message: '',
     });
-    localStorage.setItem('loggedIn', 'true');
+    // localStorage.setItem('token', loginResult.user.getIdToken);
     localStorage.setItem('email', loginResult.user.email);
     setTimeout(() => {
       navigate('/');
@@ -45,7 +46,6 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log('Click Button = ', process.env.NODE_ENV);
 
     const data = {
       email: e.target.email.value,
@@ -61,8 +61,9 @@ const Login = () => {
           message: '',
         });
         setLoading(false);
-        localStorage.setItem('loggedIn', 'true');
-        localStorage.setItem('email', data.email);
+        localStorage.setItem('email', result.data.data.email);
+        localStorage.setItem('token', result.data.data.accessToken);
+        setAuthToken(localStorage.getItem('token'));
         setTimeout(() => {
           navigate('/');
         }, 500);
@@ -164,6 +165,14 @@ const Login = () => {
                   type="password"
                   placeholder="Password"
                 />
+                <div className="m-4 text-center">
+                  <a
+                    className="mb-7 text-lg font-medium text-blue-500"
+                    href="/forgotpassword"
+                  >
+                    Forgot Password ?{' '}
+                  </a>
+                </div>
                 <button
                   className="mt-5 tracking-wide font-semibold bg-green-400 text-white w-full py-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   type="submit"
@@ -192,7 +201,7 @@ const Login = () => {
               </div>
             </div>
             <p className="mt-3 text-muted text-lg text-txGray">
-              Don't have an account yet?
+              Don't have an account yet ?{' '}
               <a className="font-medium text-green-400 text-lg" href="/signup">
                 Register
               </a>

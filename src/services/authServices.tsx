@@ -11,7 +11,17 @@ const authLogin = (data) => {
   return axios.post(backend_api + 'user/login', data);
 };
 
+const forgotPassword = (data) => {
+  return axios.post(backend_api + 'user/forgotPassword', data);
+};
+
+const resetPassword = (data) => {
+  return axios.post(backend_api + 'user/resetPassword', data);
+};
+
 export default {
   authRegister,
   authLogin,
+  forgotPassword,
+  resetPassword,
 };

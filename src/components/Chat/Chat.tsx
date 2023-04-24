@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, notification } from 'antd';
-import { UploadFile } from 'antd/es/upload';
 import ChatMessage from '../ChatMessage/ChatMessage';
 import uploadServices from 'src/services/uploadServices';
+import titleServices from 'src/services/titleServices';
 import { isEmpty } from 'src/utils/isEmpty';
 import backend_api from 'src/config';
 
 const { Dragger } = Upload;
 
-const Chat = ({ text }) => {
+const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
   const inputRef = useRef();
   const [formValue, setFormValue] = useState('');
   const [files, setFiles] = useState([]);
@@ -20,6 +20,7 @@ const Chat = ({ text }) => {
       ? localStorage.getItem('fileRealName')
       : ''
   );
+  const [title, setTitle] = useState('');
   const [promptValue, setPromptValue] = useState('');
   const [array, setArray] = useState([]);
 
@@ -30,12 +31,8 @@ const Chat = ({ text }) => {
     action: backend_api + 'upload/file',
     onChange: (info) => {
       setFiles(info.fileList);
+      console.log('OnChange---------', info);
       if (info.file.status === 'done') {
-        // Handle response from API
-        setFileRealName(info.file.response.originalname);
-        setFileName(info.file.response.filename);
-        localStorage.setItem('fileRealName', info.file.response.originalname);
-        localStorage.setItem('fileName', info.file.response.filename);
         notification.success({
           description: `${info.file.response.originalname} Upload Success`,
           message: '',
@@ -48,16 +45,69 @@ const Chat = ({ text }) => {
         });
       }
     },
-    files,
-    beforeUpload: (info: UploadFile) => {
-      if (info.type !== 'application/pdf') {
+    beforeUpload: async (info) => {
+      setLoading(true);
+      console.log('!!!!!!!!!!! = ', info.type);
+      if (
+        info.type === 'application/pdf' ||
+        info.type === 'application/msword' ||
+        info.type ===
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ) {
+        if (info.size < 1024 * 1024 * 10) {
+          console.log('Success!!!!!!');
+          let formData = new FormData();
+          formData.append('file', info);
+          try {
+            const response = await fetch(backend_api + 'upload/file', {
+              method: 'POST',
+              body: formData,
+            });
+            const data = await response.json();
+            console.log('Fetch response = ', data);
+            if (!data) {
+              notification.error({
+                message: 'Error',
+                description: 'File Upload Error',
+                duration: 2,
+              });
+              return false;
+            }
+            setLoading(false);
+            notification.success({
+              message: 'Success',
+              description: `${data.originalname} Upload Success`,
+              duration: 2,
+            });
+            setFileRealName(data.originalname);
+            localStorage.setItem('fileRealName', data.originalname);
+            setFileName(data.filename);
+            localStorage.setItem('fileName', data.filename);
+            return false;
+          } catch (error) {
+            setLoading(false);
+            console.log('Fetch error = ', error);
+          }
+        } else {
+          console.log('Twice !!!!!!');
+          setLoading(false);
+          notification.error({
+            description: `${info.name} must smaller than 10MB!`,
+            message: '',
+          });
+          return false;
+        }
+      } else {
+        console.log('Failed !!!!!!');
+        setLoading(false);
         notification.error({
-          description: `${info.name} Type Wrong`,
+          description: 'You can only upload PDF/DOC file!',
           message: '',
         });
         return Upload.LIST_IGNORE;
       }
     },
+    files,
   };
 
   useEffect(() => {
@@ -67,9 +117,19 @@ const Chat = ({ text }) => {
       save.push({ message: text, flag: true });
       setArray(save);
     }
+
+    titleServices
+      .getTitle()
+      .then((result) => {
+        setTitle(result.data.data[0].title);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [text]);
 
   const handleEmbedding = (e) => {
+    setLoading(true);
     e.preventDefault();
     setFiles([]);
     uploadServices
@@ -79,6 +139,7 @@ const Chat = ({ text }) => {
       )
       .then((result) => {
         console.log('result = ', result);
+        setLoading(false);
         notification.success({
           description: `${result.data}`,
           message: '',
@@ -86,16 +147,24 @@ const Chat = ({ text }) => {
       })
       .catch((error) => {
         console.log('Emb = ', error);
+        setLoading(false);
+        notification.error({
+          description: 'Someting went Wrong',
+          message: '',
+          duration: 2,
+        });
       });
   };
 
   const handleCancel = (e) => {
     setFileName('');
     localStorage.setItem('fileName', '');
+    setButtonFlag(false);
+    localStorage.setItem('disable_flag', JSON.stringify(false));
   };
 
   const handlePressEnter = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && formValue) {
       handleMessage();
     }
   };
@@ -117,19 +186,24 @@ const Chat = ({ text }) => {
       })
       .catch((err) => {
         console.log('MEssage Error = ', err);
+        notification.error({
+          description: err.response.data.message,
+          message: '',
+          duration: 2,
+        });
       });
   };
 
   return (
     <div className="flex w-4/6 min-w-min">
       <div className="h-full flex flex-col flex-1 justify-between pl-24 pr-24 py-4 duration-500 overflow-hidden relative bg-white">
-        <div className="h-full flex flex-col">
+        <div className="relative h-full flex flex-col">
           <div className="relative flex w-full flex-col p-2 rounded-md border border-black/10 shadow-[0_0_10px_rgba(0,0,0,0.10)] ">
-            <textarea
+            <input
               ref={inputRef}
               className="m-0 w-full resize-none border-0 overflow-hidden bg-transparent py-2 text-black dark:bg-transparent dark:text-white md:py-2 md:pl-4"
               value={promptValue}
-              placeholder="WELCOME TO 'PROGRAM' SIMPLY DROP YOUR FILE OR PASTE YOUR TEXT AND THEN ASK A QUICK QUESTION OR ASK YOUR OWN"
+              placeholder={title}
               onChange={(e) => setPromptValue(e.target.value)}
               style={{
                 maxHeight: '400px',
@@ -160,10 +234,11 @@ const Chat = ({ text }) => {
           {fileName ? (
             <div className="flex flex-row w-full gap-16 justify-center">
               <button
-                className="w-1/3 h-auto bg-red-900 text-white font-medium font-bold py-2 px-4 mt-4 rounded opacity-50"
+                className="w-1/3 h-auto bg-green-800 text-white font-medium font-bold py-2 px-4 mt-4 rounded opacity-50"
                 onClick={(e) => handleEmbedding(e)}
+                disabled={buttonFlag}
               >
-                {fileRealName} Embedding
+                {fileRealName} Uploaded
               </button>
               <button
                 className="w-1/3 h-auto bg-blue-500 text-white font-medium font-bold py-2 px-4 mt-4 rounded opacity-50"
@@ -208,6 +283,7 @@ const Chat = ({ text }) => {
             ref={inputRef}
             className="m-0 w-full resize-none border-0 overflow-hidden bg-transparent py-2 pr-8 text-black dark:bg-transparent dark:text-white md:py-2 md:pl-4"
             value={formValue}
+            required
             placeholder="SELECT A QUICK QUESTION OR ASK YOUR OWN QUESTION HERE........."
             onChange={(e) => setFormValue(e.target.value)}
             style={{
@@ -218,6 +294,7 @@ const Chat = ({ text }) => {
           />
           <button
             className="absolute right-2 top-2 rounded-sm m-3 text-neutral-800 opacity-60 hover:bg-neutral-200 hover:text-neutral-900"
+            disabled={formValue ? false : true}
             onClick={() => handleMessage()}
           >
             <svg
