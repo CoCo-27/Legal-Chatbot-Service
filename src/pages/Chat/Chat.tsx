@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Spin } from 'antd';
 import Chatbar from 'src/components/Chatbar/Chatbar';
 import ChatMiddle from 'src/components/Chat/Chat';
 import ChatRight from 'src/components/ChatRight/ChatRight';
+import { useNavigate } from 'react-router-dom';
 
 const Chat = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [sumText, setSumText] = useState('');
   const [buttonFlag, setButtonFlag] = useState(
@@ -12,6 +14,12 @@ const Chat = () => {
       ? JSON.parse(localStorage.getItem('disable_flag'))
       : false
   );
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      navigate('/');
+    }
+  }, []);
 
   return (
     <div

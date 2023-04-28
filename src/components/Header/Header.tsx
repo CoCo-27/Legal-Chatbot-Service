@@ -5,6 +5,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { notification } from 'antd';
 
 import Logo from 'src/assets/img/head.png';
+import authServices from 'src/services/authServices';
 import auth from '../../pages/Auth/FirebaseConfig';
 import { isEmpty } from 'src/utils/isEmpty';
 
@@ -30,19 +31,29 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
 
   const handleGoPage = (path: string) => {
     if (path === 'logOut') {
-      auth
-        .signOut()
-        .then(() => {
+      const data = {
+        email: localStorage.getItem('email'),
+      };
+
+      authServices
+        .logOut(data)
+        .then((result) => {
           notification.success({
-            description: 'Logout Success',
+            description: result.data.message,
             message: '',
+            duration: 2,
           });
           localStorage.clear();
-          setLogFlag('false');
-          navigate('/');
+          setLogFlag('true');
+          navigate('/login');
         })
         .catch((error) => {
-          console.log('Log Out', error);
+          console.log(error);
+          notification.error({
+            description: error.response.data.message,
+            message: '',
+            duration: 2,
+          });
         });
     } else {
       navigate('/' + path);

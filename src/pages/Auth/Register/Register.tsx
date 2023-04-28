@@ -198,7 +198,7 @@ const SignUp = () => {
               </div>
             </div>
             <p className="mt-3 text-muted text-lg text-txGray">
-              Don't have an account yet ?{' '}
+              Have an account?{' '}
               <a className="font-medium text-green-400 text-lg" href="/login">
                 Login
               </a>

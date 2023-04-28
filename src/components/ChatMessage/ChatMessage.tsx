@@ -5,7 +5,11 @@ import ChatGPTIcon from '../Icon/ChatGPTIcon';
 
 const ChatMessage = (props) => {
   return (
-    <div className="w-full text-base flex m-4">
+    <div
+      className={`w-full text-base flex p-4 ${
+        props.status === true ? 'bg-teal-50' : ''
+      }`}
+    >
       <div className="w-[30px] flex flex-col relative items-end mr-4">
         <div className="rounded-sm flex justify-center items-center relative tracking-widest h-8 w-8 text-xs">
           {props.status === false ? <HumanIcon /> : <ChatGPTIcon />}
@@ -16,9 +20,9 @@ const ChatMessage = (props) => {
           <div className="min-h-[20px] flex flex-col justify-center items-start gap-4">
             {props.message == '...' ? (
               <div className="flex items-center justify-center space-x-2">
-                <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-violet-400"></div>
-                <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-violet-600"></div>
-                <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-violet-800"></div>
+                <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-navy-100"></div>
+                <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-navy-400"></div>
+                <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-navy-800"></div>
               </div>
             ) : (
               <TypeWriter

@@ -47,7 +47,6 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
     },
     beforeUpload: async (info) => {
       setLoading(true);
-      console.log('!!!!!!!!!!! = ', info.type);
       if (
         info.type === 'application/pdf' ||
         info.type === 'application/msword' ||
@@ -57,14 +56,19 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
         if (info.size < 1024 * 1024 * 10) {
           console.log('Success!!!!!!');
           let formData = new FormData();
+          info.email = localStorage.getItem('email');
+          console.log('!!!!!!!! = ', info);
+
           formData.append('file', info);
+          formData.append('data', localStorage.getItem('email'));
+
           try {
             const response = await fetch(backend_api + 'upload/file', {
               method: 'POST',
               body: formData,
             });
             const data = await response.json();
-            console.log('Fetch response = ', data);
+            setLoading(false);
             if (!data) {
               notification.error({
                 message: 'Error',
@@ -73,17 +77,28 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
               });
               return false;
             }
-            setLoading(false);
-            notification.success({
-              message: 'Success',
-              description: `${data.originalname} Upload Success`,
-              duration: 2,
-            });
-            setFileRealName(data.originalname);
-            localStorage.setItem('fileRealName', data.originalname);
-            setFileName(data.filename);
-            localStorage.setItem('fileName', data.filename);
-            return false;
+            if (data) {
+              console.log('Fetch response = ', data);
+              if (data.code === 200) {
+                notification.success({
+                  message: 'Success',
+                  description: `${data.data.originalname} Upload Success`,
+                  duration: 2,
+                });
+                setFileRealName(data.data.originalname);
+                localStorage.setItem('fileRealName', data.data.originalname);
+                setFileName(data.data.filename);
+                localStorage.setItem('fileName', data.data.filename);
+                return false;
+              } else {
+                notification.error({
+                  message: 'Error',
+                  description: data.message,
+                  duration: 2,
+                });
+                return false;
+              }
+            }
           } catch (error) {
             setLoading(false);
             console.log('Fetch error = ', error);
@@ -164,7 +179,7 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
   };
 
   const handlePressEnter = (e) => {
-    if (e.key === 'Enter' && formValue) {
+    if (e.key === 'Enter' && formValue && fileName) {
       handleMessage();
     }
   };
@@ -232,16 +247,16 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
           </div>
 
           {fileName ? (
-            <div className="flex flex-row w-full gap-16 justify-center">
+            <div className="flex flex-row w-full gap-5 justify-center">
               <button
-                className="w-1/3 h-auto bg-green-800 text-white font-medium font-bold py-2 px-4 mt-4 rounded opacity-50"
+                className="mt-4 tracking-wide font-semibold bg-green-400 text-white w-full p-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                 onClick={(e) => handleEmbedding(e)}
                 disabled={buttonFlag}
               >
                 {fileRealName} Uploaded
               </button>
               <button
-                className="w-1/3 h-auto bg-blue-500 text-white font-medium font-bold py-2 px-4 mt-4 rounded opacity-50"
+                className="mt-4 tracking-wide font-semibold bg-red-900 text-white w-full p-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                 onClick={(e) => handleCancel(e)}
               >
                 Cancel
@@ -252,6 +267,7 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
               {...props}
               className="mt-4 rounded-lg cursor-pointer bg-gray-50 h-32"
               maxCount={1}
+              showUploadList={false}
             >
               <p className="ant-upload-drag-icon flex justify-center">
                 <svg
@@ -294,7 +310,7 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
           />
           <button
             className="absolute right-2 top-2 rounded-sm m-3 text-neutral-800 opacity-60 hover:bg-neutral-200 hover:text-neutral-900"
-            disabled={formValue ? false : true}
+            disabled={formValue && fileName ? false : true}
             onClick={() => handleMessage()}
           >
             <svg

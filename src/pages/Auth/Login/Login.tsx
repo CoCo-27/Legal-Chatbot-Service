@@ -32,6 +32,13 @@ const Login = () => {
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(loginResult);
     if (!credential) throw 'Missing credentials!';
+
+    //////////////////
+    const result = await authServices.handleGoogleAuther(
+      loginResult.user.email
+    );
+    ///////////////////
+
     notification.success({
       description: 'Login Success',
       message: '',
@@ -69,12 +76,10 @@ const Login = () => {
         }, 500);
       })
       .catch((error) => {
-        console.log('error');
-        console.log(error);
         setLoading(false);
         if (error.response) {
           notification.error({
-            description: `${error.response.data.message}`,
+            description: error.response.data.message,
             message: '',
           });
         } else {
@@ -161,20 +166,20 @@ const Login = () => {
                 <input
                   id="password"
                   required
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                  className="w-full px-8 py-4 mt-5 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                   type="password"
                   placeholder="Password"
                 />
-                <div className="m-4 text-center">
+                <div className="mt-2.5">
                   <a
-                    className="mb-7 text-lg font-medium text-blue-500"
+                    className="ml-4 text-sm font-medium text-blue-500"
                     href="/forgotpassword"
                   >
                     Forgot Password ?{' '}
                   </a>
                 </div>
                 <button
-                  className="mt-5 tracking-wide font-semibold bg-green-400 text-white w-full py-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                  className="mt-2.5 tracking-wide font-semibold bg-green-400 text-white w-full py-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   type="submit"
                   disabled={loading}
                 >
@@ -201,7 +206,7 @@ const Login = () => {
               </div>
             </div>
             <p className="mt-3 text-muted text-lg text-txGray">
-              Don't have an account yet ?{' '}
+              Don't have an account yet?{' '}
               <a className="font-medium text-green-400 text-lg" href="/signup">
                 Register
               </a>

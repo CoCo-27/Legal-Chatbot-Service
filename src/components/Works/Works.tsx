@@ -57,7 +57,7 @@ const Works = () => {
           </div>
         </div>
       </div>
-      <div>
+      <div className="w-full flex flex-col">
         <div className="text-[23px] font-normal">
           <div className="flex justify-start">
             <svg
