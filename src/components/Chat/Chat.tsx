@@ -144,6 +144,7 @@ const Chat = ({
         setTitle(result.data.data[0].title);
       })
       .catch((error) => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text]);
 
   const handleEmbedding = (e) => {
