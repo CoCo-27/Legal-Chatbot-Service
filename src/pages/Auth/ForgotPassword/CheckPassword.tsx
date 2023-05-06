@@ -1,9 +1,8 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CheckPassword = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
 
   return (
     <div className="grid w-full h-screen bg-purple-200 grid-cols-1 px-5 md:px-0 lg:grid-cols-2">

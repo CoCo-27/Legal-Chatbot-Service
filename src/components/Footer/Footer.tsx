@@ -67,6 +67,7 @@ const Footer = ({ menu }: Props) => {
                       className="flex gap-[2rem] text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-base"
                       href="https://github.com/creativetimofficial/notus-js/blob/main/LICENSE.md?ref=njs-profile"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       <svg
                         className="w-8 h-8 text-white"
@@ -86,6 +87,7 @@ const Footer = ({ menu }: Props) => {
                       className="flex gap-[2rem] text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-base"
                       href="https://creative-tim.com/terms?ref=njs-profile"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       <svg
                         className="w-8 h-8 text-white"
@@ -109,7 +111,11 @@ const Footer = ({ menu }: Props) => {
         <div className="flex items-center md:justify-between justify-center">
           <div className="flex lg:mb-0 mb-6">
             <div className="bg-white text-lightBlue-400 shadow-lg font-normal h-10 w-10 flex items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2">
-              <a href="https://www.facebook.com/toolboxwidget/" target="_blank">
+              <a
+                href="https://www.facebook.com/toolboxwidget/"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-7 w-7"
@@ -122,7 +128,11 @@ const Footer = ({ menu }: Props) => {
               </a>
             </div>
             <div className="bg-white text-lightBlue-600 shadow-lg font-normal h-10 w-10 flex items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2">
-              <a href="https://twitter.com/toolboxwidget" target="_blank">
+              <a
+                href="https://twitter.com/toolboxwidget"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-7 w-7"
@@ -138,6 +148,7 @@ const Footer = ({ menu }: Props) => {
               <a
                 href="https://www.instagram.com/toolbox_widget/"
                 target="_blank"
+                rel="noreferrer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -154,6 +165,7 @@ const Footer = ({ menu }: Props) => {
               <a
                 href="https://www.youtube.com/channel/UCt8xLGr4OMJOmm-TVN9lZ6w"
                 target="_blank"
+                rel="noreferrer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
