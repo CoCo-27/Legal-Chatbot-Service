@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IconMessagesOff } from '@tabler/icons-react';
 import { Drawer } from 'antd';
-import historyServices from 'src/services/historyServices';
+import getHistory from 'src/services/historyServices';
 import authServices from 'src/services/authServices';
 import ChatHistory from '../ChatHistory/ChatHistory';
 import ChatMessage from '../ChatMessage/ChatMessage';
@@ -42,8 +42,7 @@ const ChatRight = ({ historyFlag }) => {
       })
       .catch((error) => {});
 
-    historyServices
-      .getHistory(localStorage.getItem('email'))
+    getHistory(localStorage.getItem('email'))
       .then((result) => {
         setHistoryCount(result.data.data);
       })
@@ -56,8 +55,7 @@ const ChatRight = ({ historyFlag }) => {
 
   const handleGetHistory = () => {
     showDrawer();
-    historyServices
-      .getHistory(localStorage.getItem('email'))
+    getHistory(localStorage.getItem('email'))
       .then((result) => {
         setHistoryCount(result.data.data);
       })

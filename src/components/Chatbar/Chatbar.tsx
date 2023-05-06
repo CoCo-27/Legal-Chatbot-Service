@@ -3,11 +3,10 @@ import { IconMessagesOff, IconPlus, IconHome } from '@tabler/icons-react';
 import { notification } from 'antd';
 
 import auth from '../../pages/Auth/FirebaseConfig';
-import summarizeServices from 'src/services/summarizeServices';
+import summarize from 'src/services/summarizeServices';
 import uploadServices from 'src/services/uploadServices';
 import questionServices from 'src/services/questionServices';
 import Question from '../Question/Question';
-import { isEmpty } from 'src/utils/isEmpty';
 import { useNavigate } from 'react-router-dom';
 
 const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
@@ -72,8 +71,7 @@ const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
         question: questionArray[index],
         prompt: prompt[index],
       };
-      summarizeServices
-        .summarize(value)
+      summarize(value)
         .then((res) => {
           setText({ data: res.data.text, type: true });
           setHistoryFlag('true');
