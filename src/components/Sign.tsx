@@ -12,8 +12,6 @@ import {
 } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 
-import authLogin from 'src/services/authServices';
-
 const Sign = (props) => {
   const [fullname, setFullname] = useState('');
   const [email, setEmail] = useState('');
