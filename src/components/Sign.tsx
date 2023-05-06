@@ -76,24 +76,6 @@ const Sign = (props) => {
     }
   };
 
-  const handleLogin = () => {
-    const data = {
-      fullname,
-      phoneNumber,
-      email,
-    };
-    console.log('qweqwe', data);
-
-    authLogin
-      .authLogin(data)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
   return (
     <form className="w-full flex gap-8 pt-10" id="Sign">
       {/* <div className="w-full flex flex-col justify-center gap-10">

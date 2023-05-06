@@ -5,7 +5,6 @@ import { Menu, Transition } from '@headlessui/react';
 import { notification } from 'antd';
 
 import authServices from 'src/services/authServices';
-import ChatGPTIcon from 'src/components/Icon/ChatGPTIcon';
 import { isEmpty } from 'src/utils/isEmpty';
 
 import { useViewport } from 'src/utils';
@@ -47,7 +46,6 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
           navigate('/login');
         })
         .catch((error) => {
-          console.log(error);
           notification.error({
             description: error.response.data.message,
             message: '',
@@ -73,7 +71,7 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
       >
         <img
           src="//cdn.shopify.com/s/files/1/0070/7012/2050/files/logo_footer_270x119_ab8c96f7-a0c6-480e-b197-ffbbbe3fc8ae_270x119.png?v=1677159343"
-          className="cursor-pointer transition-all duration-300"
+          className="cursor-pointer transition-all duration-300 opacity-0"
           width={isSmall ? '150' : '250' && viewport === 'xs' ? '150' : '250'}
           alt="Logo"
           onClick={() => handleGoSection('home')}

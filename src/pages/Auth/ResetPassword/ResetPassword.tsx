@@ -18,11 +18,9 @@ const ResetPassword = () => {
       password: e.target.password.value,
     };
 
-    console.log(data);
     authServices
       .resetPassword(data)
       .then((result) => {
-        console.log(result);
         setLoading(false);
         notification.success({
           description: result.data.message,
@@ -35,7 +33,6 @@ const ResetPassword = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.log(error);
         notification.error({
           description: error.response.data.message,
           message: '',

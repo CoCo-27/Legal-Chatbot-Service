@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   browserLocalPersistence,
@@ -51,7 +51,6 @@ const SignUp = () => {
     authServices
       .authRegister(data)
       .then((result) => {
-        console.log('Okay = ', result);
         notification.success({
           description: 'Register Success',
           message: '',
@@ -62,7 +61,6 @@ const SignUp = () => {
         }, 1000);
       })
       .catch((error) => {
-        console.log('error = ', error);
         setLoading(false);
         if (error.response) {
           notification.error({

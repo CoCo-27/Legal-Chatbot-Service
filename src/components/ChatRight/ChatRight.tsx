@@ -34,30 +34,20 @@ const ChatRight = ({ historyFlag }) => {
   );
   const req_qa_box = useRef(null);
 
-  const handlePlus = () => {
-    historyCount.push('1');
-    setHistoryCount([...historyCount]);
-  };
-
   useEffect(() => {
     authServices
       .getUser({ email: localStorage.getItem('email') })
       .then((result) => {
         setUserInfo(result.data.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
 
     historyServices
       .getHistory(localStorage.getItem('email'))
       .then((result) => {
-        console.log('!!!! = ', result);
         setHistoryCount(result.data.data);
       })
-      .catch((error) => {
-        console.log('historyError = ', error);
-      });
+      .catch((error) => {});
   }, []);
 
   const handleUpgrade = () => {
@@ -71,9 +61,7 @@ const ChatRight = ({ historyFlag }) => {
       .then((result) => {
         setHistoryCount(result.data.data);
       })
-      .catch((error) => {
-        console.log('historyError = ', error);
-      });
+      .catch((error) => {});
   };
   const searchHistory = () => {};
 

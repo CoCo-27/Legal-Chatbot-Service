@@ -2,7 +2,6 @@ import React from 'react';
 import './Toast.css';
 
 const Toast = ({ toast, position, onClick }) => {
-  console.log('TOast = ', toast, position);
   return (
     <>
       <div className={`notification-container ${position}`}>

@@ -19,7 +19,6 @@ const Login = () => {
 
   //Firebase Auth
   const handleGoogleLogin = async () => {
-    console.log('Hello Google = ', process.env.NODE_ENV);
     auth.setPersistence(browserLocalPersistence);
 
     const provider = new GoogleAuthProvider();
@@ -62,7 +61,6 @@ const Login = () => {
     authServices
       .authLogin(data)
       .then((result) => {
-        console.log(result);
         notification.success({
           description: result.data.message,
           message: '',

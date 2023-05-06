@@ -37,7 +37,6 @@ const Chat = ({
     action: backend_api + 'upload/file',
     onChange: (info) => {
       setFiles(info.fileList);
-      console.log('OnChange---------', info);
       if (info.file.status === 'done') {
         notification.success({
           description: `${info.file.response.originalname} Upload Success`,
@@ -60,10 +59,8 @@ const Chat = ({
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       ) {
         if (info.size < 1024 * 1024 * 10) {
-          console.log('Success!!!!!!');
           let formData = new FormData();
           info.email = localStorage.getItem('email');
-          console.log('!!!!!!!! = ', info);
 
           formData.append('file', info);
           formData.append('data', localStorage.getItem('email'));
@@ -84,7 +81,6 @@ const Chat = ({
               return false;
             }
             if (data) {
-              console.log('Fetch response = ', data);
               if (data.code === 200) {
                 notification.success({
                   message: 'Success',
@@ -107,10 +103,8 @@ const Chat = ({
             }
           } catch (error) {
             setLoading(false);
-            console.log('Fetch error = ', error);
           }
         } else {
-          console.log('Twice !!!!!!');
           setLoading(false);
           notification.error({
             description: `${info.name} must smaller than 10MB!`,
@@ -119,7 +113,6 @@ const Chat = ({
           return false;
         }
       } else {
-        console.log('Failed !!!!!!');
         setLoading(false);
         notification.error({
           description: 'You can only upload PDF/DOC file!',
@@ -150,9 +143,7 @@ const Chat = ({
       .then((result) => {
         setTitle(result.data.data[0].title);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, [text]);
 
   const handleEmbedding = (e) => {
@@ -165,7 +156,6 @@ const Chat = ({
         localStorage.getItem('email')
       )
       .then((result) => {
-        console.log('result = ', result);
         setLoading(false);
         notification.success({
           description: `${result.data}`,
@@ -173,7 +163,6 @@ const Chat = ({
         });
       })
       .catch((error) => {
-        console.log('Emb = ', error);
         setLoading(false);
         notification.error({
           description: 'Someting went Wrong',
@@ -205,7 +194,6 @@ const Chat = ({
     uploadServices
       .requestMessage(formValue, localStorage.getItem('email'))
       .then((res) => {
-        console.log('response Message = ', res);
         const update = save.slice();
         update[update.length - 1].message = res.data.text;
         update[update.length - 1].flag = true;
@@ -214,7 +202,6 @@ const Chat = ({
         localStorage.setItem('historyFlag', 'true');
       })
       .catch((err) => {
-        console.log('MEssage Error = ', err);
         notification.error({
           description: err.response.data.message,
           message: '',

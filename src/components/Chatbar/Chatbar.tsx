@@ -24,12 +24,9 @@ const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
     questionServices
       .getQuestion()
       .then((result) => {
-        console.log(result);
         setQuestionArray(result.data.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, []);
 
   const gotoHome = () => {
@@ -47,9 +44,7 @@ const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
         localStorage.clear();
         navigate('/');
       })
-      .catch((error) => {
-        console.log('Log Out', error);
-      });
+      .catch((error) => {});
   };
 
   const handleNewAction = () => {
@@ -57,31 +52,8 @@ const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
     window.location.reload();
   };
 
-  const handlePlus = () => {
-    conversationCount.push('1');
-    localStorage.setItem(
-      'conversationHistory',
-      JSON.stringify(conversationCount)
-    );
-    setConversationCount([...conversationCount]);
-  };
-
-  const onDelete = (index) => {
-    conversationCount.splice(index, 1);
-    localStorage.setItem(
-      'conversationHistory',
-      JSON.stringify(conversationCount)
-    );
-    setConversationCount([...conversationCount]);
-  };
-
-  const handleClickConversation = (index) => {
-    setCount(index);
-  };
-
   const getPrompt = async () => {
     const data = await uploadServices.getPrompt();
-    console.log('Get Prompt = ', data);
     return data.data.data;
   };
 
@@ -109,7 +81,6 @@ const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
       summarizeServices
         .summarize(value)
         .then((res) => {
-          console.log('Summarize Suc = ', res);
           setText({ data: res.data.text, type: true });
           setHistoryFlag('true');
           localStorage.setItem('historyFlag', 'true');
@@ -121,7 +92,6 @@ const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
             message: '',
             duration: 2,
           });
-          console.log('Summarize Err= ', err);
         });
     }
   };

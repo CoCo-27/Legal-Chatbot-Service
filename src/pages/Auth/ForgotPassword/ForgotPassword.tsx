@@ -16,12 +16,10 @@ const ForgotPassword = () => {
       email: e.target.email.value,
     };
 
-    console.log(data);
     authServices
       .forgotPassword(data)
       .then((result) => {
         setLoading(false);
-        console.log(result);
         notification.success({
           description: result.data.message,
           message: '',
@@ -31,7 +29,6 @@ const ForgotPassword = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.log(error);
         notification.error({
           description: 'Something went Wrong',
           message: '',
