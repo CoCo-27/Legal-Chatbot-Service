@@ -28,7 +28,7 @@ const SignUp = () => {
 
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(loginResult);
-    if (!credential) throw 'Missing credentials!';
+    if (!credential) throw new Error('Missing credentials!');
     notification.success({
       description: 'Register Success',
       message: '',
@@ -94,6 +94,7 @@ const SignUp = () => {
         <div>
           <img
             src="https://storage.googleapis.com/devitary-image-host.appspot.com/15846435184459982716-LogoMakr_7POjrN.png"
+            alt=""
             className="w-32 mx-auto"
           />
         </div>

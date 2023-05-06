@@ -27,6 +27,7 @@ const Chat = () => {
     if (!localStorage.getItem('token')) {
       navigate('/');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

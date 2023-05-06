@@ -24,7 +24,7 @@ const Home = () => {
         setHeaderAnimation(false);
       }
     });
-  }, []);
+  });
 
   const scrollToTop = () => {
     window.scrollTo({

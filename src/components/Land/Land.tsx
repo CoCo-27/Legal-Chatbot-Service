@@ -1,8 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-
 const Land = () => {
-  const navigate = useNavigate();
-
   return (
     <div
       className="w-full flex flex-wrap md:flex-nowrap justify-between gap-8 pt-40 text-white"

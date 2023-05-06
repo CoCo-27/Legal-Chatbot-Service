@@ -30,13 +30,15 @@ const Login = () => {
 
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(loginResult);
-    if (!credential) throw 'Missing credentials!';
+    if (!credential) throw new Error('Missing credentials!');
 
     //////////////////
     const result = await authServices.handleGoogleAuther(
       loginResult.user.email
     );
     ///////////////////
+
+    console.log(result);
 
     notification.success({
       description: 'Login Success',
@@ -106,6 +108,7 @@ const Login = () => {
       <div className="m-auto w-full max-w-3xl p-8">
         <div>
           <img
+            alt=""
             src="https://storage.googleapis.com/devitary-image-host.appspot.com/15846435184459982716-LogoMakr_7POjrN.png"
             className="w-32 mx-auto"
           />
