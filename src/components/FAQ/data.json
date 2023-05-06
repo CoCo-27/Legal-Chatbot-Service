@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "title": "How does it work?",
+    "content": "After creating an account, go to your dashboard and simple drag and drop your PDF, Ask the question, and receive the answer."
+  },
+  {
+    "id": "2",
+    "title": "What types of documents can Case Cruncher handle?",
+    "content": "Version 1.0 can handle PDF’s of any size, 1 page to 100 pages or more."
+  },
+  {
+    "id": "3",
+    "title": "How does Case Cruncher ensure the confidentiality and security of my legal documents?",
+    "content": "With V1.0 the best use is to use public disclosed court documents."
+  },
+  {
+    "id": "4",
+    "title": "How accurate is the AI-generated summary, and can I rely on it for my legal work?",
+    "content": "Extremely accurate, however, a simple review is always best until you get comfortable with the software. We suggest you take cases that you are familiar with already and test the software."
+  },
+  {
+    "id": "5",
+    "title": "Are there any limitations on the size or length of documents that can be summarized?",
+    "content": "Version 1 can handle a 1page to 100-page PDF or more."
+  },
+  {
+    "id": "6",
+    "title": "Can I customize the summary length and focus based on my specific requirements?",
+    "content": "We have “quick questions” to make the process quick but you can also ask your own personal questions and this can allow you to tailor the response specifically that you are looking for."
+  },
+  {
+    "id": "7",
+    "title": "How does Case Cruncher stay up to date with the latest legal terminology and precedents?",
+    "content": "At the moment Case Cruncher is a tool designed to help you highly reduce your reading time and leaves the legal bar-certified work up to the lawyer. We are simply a tool to help, not a replacement."
+  }
+]

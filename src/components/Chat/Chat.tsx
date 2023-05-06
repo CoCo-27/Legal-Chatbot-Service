@@ -8,7 +8,13 @@ import backend_api from 'src/config';
 
 const { Dragger } = Upload;
 
-const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
+const Chat = ({
+  text,
+  buttonFlag,
+  setLoading,
+  setButtonFlag,
+  setHistoryFlag,
+}) => {
   const inputRef = useRef();
   const [formValue, setFormValue] = useState('');
   const [files, setFiles] = useState([]);
@@ -127,9 +133,15 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
 
   useEffect(() => {
     req_qa_box.current.scrollTop = req_qa_box.current.scrollHeight;
-    if (!isEmpty(text)) {
+    if (!isEmpty(text.data)) {
       const save = array.slice();
-      save.push({ message: text, flag: true });
+      if (text.type === false) {
+        save.push({ message: text.data, flag: false });
+        save.push({ message: '...', flag: true });
+      } else {
+        save[save.length - 1].message = text.data;
+        save[save.length - 1].flag = true;
+      }
       setArray(save);
     }
 
@@ -198,6 +210,8 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
         update[update.length - 1].message = res.data.text;
         update[update.length - 1].flag = true;
         setArray(update);
+        setHistoryFlag('true');
+        localStorage.setItem('historyFlag', 'true');
       })
       .catch((err) => {
         console.log('MEssage Error = ', err);
@@ -228,7 +242,7 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
           </div>
           <div
             ref={req_qa_box}
-            className="relative flex w-full h-32 flex-grow flex-col mt-4 rounded-md border border-black/10 bg-white shadow-[0_0_10px_rgba(0,0,0,0.10)] overflow-y-auto overflow-x-hidden"
+            className="relative flex w-full h-64 flex-grow flex-col mt-4 rounded-md border border-black/10 bg-white shadow-[0_0_10px_rgba(0,0,0,0.10)] overflow-y-auto overflow-x-hidden"
           >
             {!isEmpty(array) ? (
               array.map((item, index) => {
@@ -249,7 +263,9 @@ const Chat = ({ text, buttonFlag, setLoading, setButtonFlag }) => {
           {fileName ? (
             <div className="flex flex-row w-full gap-5 justify-center">
               <button
-                className="mt-4 tracking-wide font-semibold bg-green-400 text-white w-full p-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                className={`mt-4 tracking-wide font-semibold bg-green-400 text-white w-full p-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none ${
+                  buttonFlag === true ? 'opacity-50' : 'opacity-100'
+                }`}
                 onClick={(e) => handleEmbedding(e)}
                 disabled={buttonFlag}
               >

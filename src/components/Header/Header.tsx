@@ -4,9 +4,8 @@ import { useState, Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { notification } from 'antd';
 
-import Logo from 'src/assets/img/head.png';
 import authServices from 'src/services/authServices';
-import auth from '../../pages/Auth/FirebaseConfig';
+import ChatGPTIcon from 'src/components/Icon/ChatGPTIcon';
 import { isEmpty } from 'src/utils/isEmpty';
 
 import { useViewport } from 'src/utils';
@@ -26,7 +25,7 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
   );
 
   const handleGoSection = (item: any) => {
-    document.getElementById(item.id).scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(item).scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleGoPage = (path: string) => {
@@ -63,7 +62,7 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
   return (
     <Menu>
       <div
-        className={`w-full flex items-center justify-between fixed bg-white shadow-md z-10 px-3 transition-all duration-300 ${
+        className={`w-full flex items-center font-semibold justify-between fixed bg-gradient-to-r from-blue-600 to-blue-400 shadow-md z-10 px-3 transition-all duration-300 ${
           isSmall
             ? 'py-1 h-[100px]'
             : 'py-4 h-[140px]' && viewport === 'xs'
@@ -73,11 +72,11 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
 			`}
       >
         <img
-          src={Logo}
+          src="//cdn.shopify.com/s/files/1/0070/7012/2050/files/logo_footer_270x119_ab8c96f7-a0c6-480e-b197-ffbbbe3fc8ae_270x119.png?v=1677159343"
           className="cursor-pointer transition-all duration-300"
           width={isSmall ? '150' : '250' && viewport === 'xs' ? '150' : '250'}
           alt="Logo"
-          onClick={() => navigate('/#home')}
+          onClick={() => handleGoSection('home')}
         />
         <div className="flex justify-between">
           <div className="hidden md:block">
@@ -92,7 +91,7 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
                   MENU_ITEMS.map((item) => (
                     <div
                       key={item.id}
-                      onClick={() => handleGoSection(item)}
+                      onClick={() => handleGoSection(item.id)}
                       className="cursor-pointer hover:text-[#0094FF] transition-all duration-150 ease-out"
                     >
                       <div
@@ -210,7 +209,7 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
                           <button
                             className={`${'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                             key={item.id}
-                            onClick={() => handleGoSection(item)}
+                            onClick={() => handleGoSection(item.id)}
                           >
                             <MoveActiveIcon
                               className="mr-2 h-5 w-5"

@@ -6,7 +6,7 @@ import authServices from 'src/services/authServices';
 import ChatHistory from '../ChatHistory/ChatHistory';
 import ChatMessage from '../ChatMessage/ChatMessage';
 
-const ChatRight = () => {
+const ChatRight = ({ historyFlag }) => {
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
@@ -43,7 +43,6 @@ const ChatRight = () => {
     authServices
       .getUser({ email: localStorage.getItem('email') })
       .then((result) => {
-        console.log('!!!! = ', result);
         setUserInfo(result.data.data);
       })
       .catch((error) => {
@@ -53,6 +52,7 @@ const ChatRight = () => {
     historyServices
       .getHistory(localStorage.getItem('email'))
       .then((result) => {
+        console.log('!!!! = ', result);
         setHistoryCount(result.data.data);
       })
       .catch((error) => {
@@ -89,10 +89,13 @@ const ChatRight = () => {
 
   const usedPersent = () => {
     const value =
-      userInfo.billing.state === 'Enterprise'
-        ? 0
+      userInfo.billing.value === 0
+        ? -1
+        : userInfo.billing.value === -1
+        ? (100 * userInfo.usage_tracking) / -userInfo.billing.value
         : (100 * userInfo.usage_tracking) / userInfo.billing.value;
-    const string = value === 0 ? 'You can use infinitly' : `${value}%`;
+    const string =
+      value === -1 ? 'You can use infinitly' : Math.trunc(value) + '%';
     return string;
   };
 
@@ -111,16 +114,17 @@ const ChatRight = () => {
           ref={req_qa_box}
           className="relative flex w-full h-full flex-grow flex-col rounded-md border border-black/10 bg-white shadow-[0_0_10px_rgba(0,0,0,0.10)] overflow-y-auto overflow-x-hidden"
         >
-          {historyCount.map((item, index) => {
-            return (
-              <ChatMessage
-                key={index}
-                box_ref={req_qa_box}
-                message={item.message}
-                status={item.flag}
-              />
-            );
-          })}
+          {historyCount &&
+            historyCount.map((item, index) => {
+              return (
+                <ChatMessage
+                  key={index}
+                  box_ref={req_qa_box}
+                  message={item.message}
+                  status={item.flag}
+                />
+              );
+            })}
         </div>
       </Drawer>
       <input
@@ -133,7 +137,7 @@ const ChatRight = () => {
       <div className="flex-grow overflow-auto">
         <div className="flex w-full flex-col ">
           <div className="flex w-full flex-col ">
-            {historyCount.length > 0 ? (
+            {historyFlag === 'true' ? (
               <div className="h-full">
                 <ChatHistory
                   onClick={handleGetHistory}

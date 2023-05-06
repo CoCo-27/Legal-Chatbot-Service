@@ -6,7 +6,7 @@ import Pricing from 'src/components/Pricing/Pricing';
 import Footer from 'src/components/Footer/Footer';
 import FAQ from 'src/components/FAQ/FAQ';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Home = () => {
   const [showButton, setShowButton] = useState(false);
@@ -33,7 +33,10 @@ const Home = () => {
   };
 
   return (
-    <div className="flex w-full justify-center bg-gradient-to-tr from-blue-200">
+    <div
+      className="flex w-full justify-center bg-gradient-to-br from-blue-600 to-blue-400 text-white"
+      style={{ fontFamily: 'Poppins, sans-serif' }}
+    >
       {/* <header className="w-full flex justify-between fixed bg-white-300 shadow-md w-full flex justify-between z-10 transition-all duration-300"> */}
       <Header menu="flex" isSmall={headerAnimation} />
       {/* <Navbar /> */}

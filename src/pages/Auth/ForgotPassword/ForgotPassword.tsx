@@ -42,7 +42,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="grid w-full h-screen bg-purple-200 grid-cols-1 px-5 md:px-0 lg:grid-cols-2">
-      <div className="hidden w-full rounded-br-xxl bg-gradient-to-r from-green-200 to-green-600 px-20 lg:block">
+      <div className="hidden w-full rounded-br-xxl bg-gradient-to-br from-blue-600 to-blue-200 px-20 lg:block">
         <div className="relative w-full pt-20 ">
           <div className="mt-44 mb-3 flex"></div>
           <div className="text-white text-6xl font-bold">
@@ -63,8 +63,8 @@ const ForgotPassword = () => {
             Forgotten Password
           </h1>
           <p className="mb-8 text-base text-txGray">
-            Miss-placed your password ? Don't worry- we'll get you back to
-            ToolBox Site in no time!
+            Miss-placed your password ? Don't worry- we'll get you back to Case
+            Cruncher in no time!
           </p>
           <input
             name="email"
@@ -75,7 +75,7 @@ const ForgotPassword = () => {
             required
           />
           <button
-            className="mb-8 tracking-wide font-semibold bg-green-400 text-white w-full py-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+            className="mb-8 tracking-wide font-semibold bg-blue-300 text-white w-full py-4 rounded-lg hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
             type="submit"
             disabled={loading}
           >

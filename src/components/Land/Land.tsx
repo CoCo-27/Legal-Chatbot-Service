@@ -9,17 +9,21 @@ const Land = () => {
   };
   return (
     <div
-      className="w-full flex flex-wrap md:flex-nowrap justify-between gap-8 pt-40"
+      className="w-full flex flex-wrap md:flex-nowrap justify-between gap-8 pt-40 text-white"
       id="home"
     >
       <div className="flex flex-wrap gap-8 text-center">
-        <div className="text-6xl text-[#3c3c3c] font-bold ">
-          Let AI Condense your text in seconds. Got Questions? Get Answers
+        <div className="text-6xl font-bold ">
+          Case Cruncher - AI - Powered Document Summarization for Lawyers
         </div>
-        <div className="text-3xl text-[#3c3c3c]">
-          Provide your text, our AI will analyze, we'll instantly summarize it
-          in an easy read manner, and if you have any questions about the text,
-          our AI has an answer
+        <div className="text-3xl">
+          Tired of reading long document after long document, day after day?
+          Need a way to be more productive and save your valuable time? Need a
+          second set of eyes or help clarification? Case Cruncher is an
+          innovative and super simple AI software designed specifically to
+          assist legal professionals in summarizing lengthy and complex
+          documents. Case Cruncher helps lawyers get back to lawyering and helps
+          remove some of the giant burdens of lengthy documents.
         </div>
       </div>
     </div>

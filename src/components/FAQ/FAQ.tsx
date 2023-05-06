@@ -1,98 +1,105 @@
-const Contact = () => {
+import Data from './data.json';
+import MobileImage from './MobileImage';
+import DesktopImage from './DesktopImage';
+import useWindowDimensions from '../../useWindowDimensions';
+import bgMobile from '../../assets/img/bg-pattern-mobile.svg';
+import bgDesktop from '../../assets/img/bg-pattern-desktop.svg';
+import { useState } from 'react';
+import Arrow from '../../assets/img/icon-arrow-down.svg';
+
+const Content = () => {
+  const { width } = useWindowDimensions();
+  const backgroundMobile = {
+    backgroundImage: `url(${bgMobile})`,
+    backgroundPosition: 'top',
+    backgroundRepeat: 'no-repeat',
+  };
+  const backgroundDesktop = {
+    backgroundImage: `url(${bgDesktop})`,
+    backgroundPosition: 'left -10rem top 4rem',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  };
+
+  const [active, setActive] = useState(null);
+  const handleToggle = (index) => {
+    active === index ? setActive(null) : setActive(index);
+  };
   return (
-    <div className="w-full flex flex-wrap gap-20 pt-8" id="contact">
-      <div className="w-full pt-10 " />
-      <div className="w-full flex flex-wrap justify-center gap-8 flex-col">
-        <div className="lg:px-48 text-[#3c3c3c] text-[35px] font-bold text-center text-[#00225e]  ">
-          Frequently asked questions
+    <div className="w-full flex flex-wrap gap-20 pt-32" id="contact">
+      <div className="w-full bg-white shadow-[0_8px_9px_-4px_rgba(51,45,45,0.3),0_4px_18px_0_rgba(51,45,45,0.2)] rounded-bl-[7.5rem] rounded-tr-[7.5rem] min-h-[535px] pr-16 pb-16 flex m-0 flex-col md:flex-row md:justify-around md:min-h-[500px]">
+        <div
+          className="md:w-[50%] md:h-[535px] relative"
+          style={width < 960 ? backgroundMobile : backgroundDesktop}
+        >
+          {width < 960 ? <MobileImage /> : <DesktopImage />}
         </div>
-        <div className="w-full flex justify-center flex-col">
-          <div id="accordion-collapse" data-accordion="collapse">
-            <h2 id="accordion-collapse-heading-1">
-              <button
-                type="button"
-                className="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-                data-accordion-target="#accordion-collapse-body-1"
-                aria-expanded="true"
-                aria-controls="accordion-collapse-body-1"
-              >
-                <span>What is Flowbite?</span>
-                <svg
-                  data-accordion-icon
-                  className="w-6 h-6 rotate-180 shrink-0"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </button>
-            </h2>
-            <div
-              id="accordion-collapse-body-1"
-              className="hidden"
-              aria-labelledby="accordion-collapse-heading-1"
-            >
-              <div className="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-                <p className="mb-2 text-gray-500 dark:text-gray-400">
-                  Flowbite is an open-source library of interactive components
-                  built on top of Tailwind CSS including buttons, dropdowns,
-                  modals, navbars, and more.
-                </p>
-                <p className="text-gray-500 dark:text-gray-400">
-                  Check out this guide to learn how to{' '}
-                  <a
-                    href="/docs/getting-started/introduction/"
-                    className="text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    get started
-                  </a>{' '}
-                  and start developing websites even faster with components on
-                  top of Tailwind CSS.
-                </p>
-              </div>
-            </div>
+
+        <div className="md:w-[50%] md:min-h-[636px]">
+          <h1 className="text-[#000000] font-bold text-center text-4xl ml-4 mt-[2.75rem] md:text-left md:mt-[3.75rem]">
+            FAQ
+          </h1>
+          <div className="flex flex-col mt-[2.25rem] md:mt-[2.75rem] md:mb-0">
+            {Data.map((item, index) => {
+              return (
+                <div className="m-0 p-0 w-full" key={index}>
+                  <div className="flex flex-col">
+                    <div className="flex justify-between items-center gap-3 my-2 mx-4">
+                      <p
+                        className={
+                          active === index
+                            ? 'text-[#000000] text-xl font-bold cursor-pointer'
+                            : 'text-[#29465B] text-xl cursor-pointer'
+                        }
+                        onClick={() => handleToggle(index)}
+                      >
+                        {item.title}
+                      </p>
+
+                      <img
+                        src={Arrow}
+                        alt="arrow-icon"
+                        onClick={() => handleToggle(index)}
+                        className={
+                          active === index
+                            ? 'cursor-pointer w-[10px] h-[8px] rotate-180'
+                            : 'cursor-pointer w-[10px] h-[8px]'
+                        }
+                      />
+                    </div>
+                    <hr
+                      className={
+                        active === index
+                          ? 'border-hidden'
+                          : 'border-b-1 border-LightGrayishBlue mt-[8px]'
+                      }
+                    ></hr>
+                    <p
+                      onClick={() => handleToggle(index)}
+                      className={
+                        active === index
+                          ? 'text-[#29465B] text-lg w-full p-0 mt-[8px] ml-4 mr-8 cursor-pointer'
+                          : 'invisible max-h-0'
+                      }
+                    >
+                      {item.content}
+                    </p>
+                    <hr
+                      className={
+                        active === index
+                          ? 'border-b-1 border-LightGrayishBlue mt-[10px]'
+                          : 'border-hidden'
+                      }
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          {/* <button
-            className="w-full flex-row flex text-center px-8 block rounded-full bg-white p-4 shadow-lg dark:bg-neutral-700"
-            type="button"
-            data-te-collapse-init
-            data-te-collapse-collapsed
-            aria-expanded="false"
-          >
-            <h5 className=" text-xl text-left font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-              What is Writerly AI?
-            </h5>
-            <span className="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none dark:fill-blue-300 dark:group-[[data-te-collapse-collapsed]]:fill-white">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </span>
-          </button>
-          <button className="w-full pl-8 block rounded-full bg-white p-4 shadow-lg dark:bg-neutral-700 mt-4">
-            <h5 className=" text-xl text-left font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-              How can Writerly help me?
-            </h5>
-          </button> */}
         </div>
       </div>
     </div>
   );
 };
 
-export default Contact;
+export default Content;

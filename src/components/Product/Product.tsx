@@ -1,9 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { notification } from 'antd';
-import Whatsaapp from 'src/assets/img/whatsico.png';
-import Tele from 'src/assets/img/tele.png';
-import Dalle from 'src/assets/img/dalle.png';
-import Musical from 'src/assets/img/musical.png';
+import Case_Cruncher from 'src/assets/img/Case_Cruncher.png';
 
 import Card from '../Card';
 
@@ -25,30 +22,23 @@ const Aibot = () => {
   };
 
   return (
-    <div className="w-full flex flex-wrap gap-20 pt-32 " id="ai-bots">
+    <div
+      className="w-full flex flex-wrap gap-20 pt-32 items-center justify-center text-white"
+      id="ai-bots"
+    >
       <div className="w-full flex flex-wrap justify-center gap-8">
-        <div className="text-[#3c3c3c] text-[35px] font-bold text-center text-[#00225e]">
-          AI BOTS TO SOCIAL MEDIA
-        </div>
-        <div className="w-full text-center text-[25px] text-[#3c3c3c] font-normal">
-          Completely personalized AI chatbot experience with messaging
-          capabilities with cool features, now available on WhatsApp and
-          Telegram.
-        </div>
+        <div className="text-[35px] font-bold text-center">Case Cruncher</div>
       </div>
-      <div className="w-full grid grid-cols-12 gap-4">
-        <div className="col-span-12 md:col-span-6 lg:col-span-3">
-          <Card
-            title="Chat with ChatGPT in Open AI"
-            description="Quickly send your questions to Chat Buddy and receive fast and
-            accyrate answers with ease and simplicity."
-            logo={Whatsaapp}
-            comingSoon={false}
-            onClick={() => handleChat()}
-          />
-        </div>
+      <div className="col-span-12 md:col-span-6 lg:col-span-3">
+        <Card
+          title="Chat with Case Cruncher"
+          description=""
+          logo={Case_Cruncher}
+          comingSoon={false}
+          onClick={() => handleChat()}
+        />
 
-        <div className="col-span-12 md:col-span-6 lg:col-span-3 text-center">
+        {/* <div className="col-span-12 md:col-span-6 lg:col-span-3 text-center">
           <Card
             title="Instantly connect with AI on Telegram"
             description="Send your questions to Chat Buddy via Telegram in seconds and
@@ -80,7 +70,7 @@ const Aibot = () => {
             comingSoon={false}
             onClick={() => {}}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

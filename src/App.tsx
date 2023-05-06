@@ -9,6 +9,9 @@ import CheckPassword from './pages/Auth/ForgotPassword/CheckPassword';
 import ResetPassword from './pages/Auth/ResetPassword/ResetPassword';
 import Welcome from './pages/Welcome';
 import Chat from './pages/Chat/Chat';
+import Privacy from './components/Footer/Privacy/Privacy';
+import Terms from './components/Footer/Terms/Terms';
+import Disclaimer from './components/Footer/Disclaimer/Disclaimer';
 
 const App = () => {
   useEffect(() => {
@@ -20,6 +23,9 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />

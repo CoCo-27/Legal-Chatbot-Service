@@ -1,0 +1,7 @@
+.my-div {
+  transition: height 1s ease-out; /* or any other property you want to animate */
+}
+
+.expanded {
+  height: 100px; /* or any other value you want */
+}

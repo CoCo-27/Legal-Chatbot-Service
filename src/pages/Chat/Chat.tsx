@@ -8,11 +8,19 @@ import { useNavigate } from 'react-router-dom';
 const Chat = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [sumText, setSumText] = useState('');
+  const [sumText, setSumText] = useState({
+    data: '',
+    type: '',
+  });
   const [buttonFlag, setButtonFlag] = useState(
     localStorage.getItem('disable_flag')
       ? JSON.parse(localStorage.getItem('disable_flag'))
       : false
+  );
+  const [historyFlag, setHistoryFlag] = useState(
+    localStorage.getItem('historyFlag')
+      ? localStorage.getItem('historyFlag')
+      : 'false'
   );
 
   useEffect(() => {
@@ -40,18 +48,19 @@ const Chat = () => {
         <></>
       )}
       <Chatbar
-        text={sumText}
+        setHistoryFlag={setHistoryFlag}
         setText={setSumText}
         setLoading={setLoading}
         setButtonFlag={setButtonFlag}
       />
       <ChatMiddle
         text={sumText}
+        setHistoryFlag={setHistoryFlag}
         buttonFlag={buttonFlag}
         setLoading={setLoading}
         setButtonFlag={setButtonFlag}
       />
-      <ChatRight />
+      <ChatRight historyFlag={historyFlag} />
     </div>
   );
 };

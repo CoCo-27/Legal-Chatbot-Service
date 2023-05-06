@@ -10,12 +10,7 @@ import Question from '../Question/Question';
 import { isEmpty } from 'src/utils/isEmpty';
 import { useNavigate } from 'react-router-dom';
 
-const Chatbar = ({
-  text,
-  setText,
-  setLoading,
-  setButtonFlag,
-}) => {
+const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
   const [questionArray, setQuestionArray] = useState([]);
@@ -29,6 +24,7 @@ const Chatbar = ({
     questionServices
       .getQuestion()
       .then((result) => {
+        console.log(result);
         setQuestionArray(result.data.data);
       })
       .catch((error) => {
@@ -90,13 +86,8 @@ const Chatbar = ({
   };
 
   const getResponse = async (index) => {
-    setLoading(true);
-    setButtonFlag(true);
-    localStorage.setItem('disable_flag', JSON.stringify(true));
-
     const email = localStorage.getItem('email');
     const fileName = localStorage.getItem('fileName');
-    const prompt = await getPrompt();
     if (!fileName) {
       setLoading(false);
       notification.info({
@@ -105,16 +96,26 @@ const Chatbar = ({
         duration: 2,
       });
     } else {
+      setButtonFlag(true);
+      localStorage.setItem('disable_flag', JSON.stringify(true));
+      setText({ data: questionArray[index], type: false });
+      const prompt = await getPrompt();
+      const value = {
+        email: email,
+        fileName: fileName,
+        question: questionArray[index],
+        prompt: prompt[index],
+      };
       summarizeServices
-        .summarize(email, fileName, prompt[index])
+        .summarize(value)
         .then((res) => {
           console.log('Summarize Suc = ', res);
-          setLoading(false);
-          setText(res.data.text);
+          setText({ data: res.data.text, type: true });
+          setHistoryFlag('true');
+          localStorage.setItem('historyFlag', 'true');
         })
         .catch((err) => {
           localStorage.setItem('disable_flag', JSON.stringify(false));
-          setLoading(false);
           notification.error({
             description: 'Something went wrong',
             message: '',

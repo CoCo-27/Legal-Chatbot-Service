@@ -185,7 +185,7 @@ const Pricing = () => {
   // );
 
   return (
-    <div className="w-full flex pt-32 justify-center">
+    <div className="w-full flex pt-32 justify-center" id="pricing">
       <stripe-pricing-table
         style={{
           display: 'flex',
