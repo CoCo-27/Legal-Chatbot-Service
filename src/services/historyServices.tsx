@@ -5,6 +5,4 @@ const getHistory = (value) => {
   return axios.post(backend_api + 'history/get', { email: value });
 };
 
-export default {
-  getHistory,
-};
+export default getHistory;

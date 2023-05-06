@@ -29,7 +29,7 @@ const resetPassword = (data) => {
   return axios.post(backend_api + 'user/resetPassword', data);
 };
 
-export default {
+const objects = {
   authRegister,
   authLogin,
   forgotPassword,
@@ -38,3 +38,5 @@ export default {
   logOut,
   getUser,
 };
+
+export default objects;

@@ -34,7 +34,6 @@ const Aibot = () => {
           title="Chat with Case Cruncher"
           description=""
           logo={Case_Cruncher}
-          comingSoon={false}
           onClick={() => handleChat()}
         />
 

@@ -17,8 +17,10 @@ const editQuestion = (value) => {
   });
 };
 
-export default {
+const object = {
   createQuestion,
   getQuestion,
   editQuestion,
 };
+
+export default object;

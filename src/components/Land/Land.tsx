@@ -1,12 +1,8 @@
-import whatsapp from 'src/assets/img/whatsapp.png';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Land = () => {
   const navigate = useNavigate();
 
-  const handleGoPage = (path: string) => {
-    navigate('/' + path);
-  };
   return (
     <div
       className="w-full flex flex-wrap md:flex-nowrap justify-between gap-8 pt-40 text-white"

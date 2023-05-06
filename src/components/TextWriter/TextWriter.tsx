@@ -23,7 +23,7 @@ export default function TypeWriter(props) {
   }, []);
 
   useEffect(() => {
-    if (old_index == index) return;
+    if (old_index === index) return;
     old_index = index;
 
     setDisplayedContent(

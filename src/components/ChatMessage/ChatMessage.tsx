@@ -18,7 +18,7 @@ const ChatMessage = (props) => {
       <div className="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
         <div className="flex flex-grow flex-col gap-3 justify-center">
           <div className="min-h-[20px] flex flex-col justify-center items-start gap-4">
-            {props.message == '...' ? (
+            {props.message === '...' ? (
               <div className="flex items-center justify-center space-x-2">
                 <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-navy-100"></div>
                 <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-navy-400"></div>

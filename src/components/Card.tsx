@@ -1,16 +1,12 @@
-import Comming from 'src/assets/img/comming.png';
-import Case_Crunher from 'src/assets/img/Case_Cruncher.png';
-
 interface CardProps {
   title: string;
   description: string;
   logo: any;
-  comingSoon?: boolean;
   onClick: () => void;
 }
 
 const Card = (props: CardProps) => {
-  const { title, description, logo, comingSoon = false, onClick } = props;
+  const { title, description, logo, onClick } = props;
 
   return (
     <a className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">

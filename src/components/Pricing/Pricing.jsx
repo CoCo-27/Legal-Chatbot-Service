@@ -1,5 +1,4 @@
-import icon from 'src/assets/img/check2.png';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 const Pricing = () => {
   // const [message, setMessage] = useState('');

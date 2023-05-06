@@ -13,8 +13,10 @@ const editTitle = (value) => {
   return axios.post(backend_api + 'title/edit', { value: value });
 };
 
-export default {
+const object = {
   createTitle,
   getTitle,
   editTitle,
 };
+
+export default object;

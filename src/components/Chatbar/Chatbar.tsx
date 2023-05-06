@@ -12,13 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
   const navigate = useNavigate();
-  const [count, setCount] = useState(0);
   const [questionArray, setQuestionArray] = useState([]);
-  const [conversationCount, setConversationCount] = useState(
-    isEmpty(JSON.parse(localStorage.getItem('conversationHistory')))
-      ? []
-      : JSON.parse(localStorage.getItem('conversationHistory'))
-  );
 
   useEffect(() => {
     questionServices

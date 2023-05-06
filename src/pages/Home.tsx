@@ -13,6 +13,7 @@ const Home = () => {
   const [offset, setOffset] = useState(0);
   const [headerAnimation, setHeaderAnimation] = useState(false);
   useEffect(() => {
+    console.log(offset);
     window.addEventListener('scroll', () => {
       setOffset(window.pageYOffset > 500 ? 500 : window.pageYOffset);
       if (window.pageYOffset > 300) {

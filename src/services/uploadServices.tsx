@@ -28,9 +28,11 @@ const requestMessage = (value, email) => {
   });
 };
 
-export default {
+const object = {
   uploadFile,
   getPrompt,
   embedding,
   requestMessage,
 };
+
+export default object;

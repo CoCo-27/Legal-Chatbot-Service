@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-// import Modal from "src/components/Card";
+import React from 'react';
 
 type Props = {
   menu: any;
@@ -16,12 +14,12 @@ const Footer = ({ menu }: Props) => {
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap text-left lg:text-left">
           <div className="w-full lg:w-4/12 px-4">
-            {/* <img
+            <img
               src="//cdn.shopify.com/s/files/1/0070/7012/2050/files/logo_footer_270x119_ab8c96f7-a0c6-480e-b197-ffbbbe3fc8ae_270x119.png?v=1677159343"
-              className="cursor-pointer transition-all duration-300"
+              className="cursor-pointer transition-all duration-300 opacity-0"
               alt="Logo"
               onClick={() => goToHome()}
-            /> */}
+            />
           </div>
           <div className="flex w-full lg:w-8/12 justify-center px-4">
             <div className="flex flex-wrap items-top mb-6">

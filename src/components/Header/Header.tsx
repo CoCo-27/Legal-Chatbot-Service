@@ -56,7 +56,7 @@ const Header = ({ menu, isSmall, isSign }: Props) => {
       navigate('/' + path);
     }
   };
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = false;
   return (
     <Menu>
       <div

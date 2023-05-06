@@ -1,9 +1,4 @@
-import Header from 'src/components/Header/Header';
-import Footer from 'src/components/Footer/Footer';
-
 const Welcome = () => {
-  const email = localStorage.getItem('email');
-
   return (
     <>
       <div className="pt-32 text-white rounded-bl-full">
