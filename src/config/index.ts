@@ -1,3 +1,3 @@
-// const backend_api = 'http://localhost:8080/';
-const backend_api = "http://3.235.251.208/api/";
+// const backend_api = 'http://35.173.119.92/dev/api/';
+const backend_api = 'https://casecruncher.com/api/';
 export default backend_api;
