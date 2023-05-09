@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { IconMessagesOff, IconPlus, IconHome } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
+import {
+  IconMessagesOff,
+  IconPlus,
+  IconHome,
+  IconChevronDown,
+  IconChevronUp,
+} from '@tabler/icons-react';
 import { notification } from 'antd';
 
 import auth from '../../pages/Auth/FirebaseConfig';
@@ -7,11 +14,11 @@ import summarize from 'src/services/summarizeServices';
 import uploadServices from 'src/services/uploadServices';
 import questionServices from 'src/services/questionServices';
 import Question from '../Question/Question';
-import { useNavigate } from 'react-router-dom';
 
 const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
   const navigate = useNavigate();
   const [questionArray, setQuestionArray] = useState([]);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     questionServices
@@ -110,26 +117,45 @@ const Chatbar = ({ setHistoryFlag, setText, setLoading, setButtonFlag }) => {
         </button>
       </div>
       <div className="flex-grow overflow-auto">
-        <div className="flex border-b border-white/20 pb-2 pr-2">
+        <div className="flex pb-2">
           <div className="flex w-full flex-col ">
-            <label className="flex text-white font-bold text-xl justify-center mt-8 mb-4 underline-offset-4">
-              QUICK QUESTION
-            </label>
-
-            {questionArray.length > 0 ? (
-              questionArray.map((item, index) => {
-                return (
-                  <div key={index}>
-                    <Question index={index} name={item} onClick={getResponse} />
-                  </div>
-                );
-              })
-            ) : (
-              <div className="flex flex-col gap-3 items-center text-sm leading-normal mt-8 text-white opacity-50">
-                <IconMessagesOff />
-                No Questions.
-              </div>
-            )}
+            <div
+              className="flex flex-row justify-center items-center mt-8 mb-4 cursor-pointer gap-[0.4rem] transition duration-1500 ease-in-out"
+              onClick={() => setActive(!active)}
+            >
+              <label className="flex text-white font-bold itmes-center cursor-pointer select-none text-xl underline-offset-4">
+                QUICK QUESTION
+              </label>
+              {active === true ? (
+                <IconChevronUp style={{ color: 'white' }} />
+              ) : (
+                <IconChevronDown style={{ color: 'white' }} />
+              )}
+            </div>
+            <div
+              className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                active ? 'h-full' : 'h-0'
+              }`}
+            >
+              {questionArray.length > 0 ? (
+                questionArray.map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <Question
+                        index={index}
+                        name={item}
+                        onClick={getResponse}
+                      />
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="flex flex-col gap-3 items-center text-sm leading-normal mt-8 text-white select-none opacity-50">
+                  <IconMessagesOff />
+                  No Questions.
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
